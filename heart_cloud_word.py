@@ -3,63 +3,115 @@
 # @Date    : 2018-05-20 18:26:50
 # @Author  : He Liang (heianghit@foxmail.com)
 # @Link    : https://github.com/HeLiangHIT
+# ref      : https://github.com/amueller/word_cloud 
 # usage: python heart_cloud_word.py --help
 
-import jieba    #中文分词大名鼎鼎的jieba包
-import numpy    #numpy计算包
-import codecs   #codecs提供的open方法来指定打开的文件的语言编码，它会在读取的时候自动转换为内部unicode 
-import pandas   #数据分析包
-import matplotlib.pyplot as plt #绘图包
-from wordcloud import WordCloud #词云包
+import jieba
+import numpy
+import pandas
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 from scipy.misc import imread
+from PIL import Image, ImageDraw
 from wordcloud import ImageColorGenerator
-
-'''读取聊天记录'''
-file=codecs.open("kwy.txt",'r','utf-8')#读取文本使用codecs包可以先通过设置文件的编码，对文件进行读入，这样子就不用边读遍转码了，非常实用。
-content=file.read()
-file.close()
-segment=[]
-jieba.load_userdict("userdict.txt")#为了提高分词的准确度，我们最好寻找我们分词的词库
-segs=jieba.cut(content) #切词，“么么哒”才能出现
-for seg in segs:
-    #一个字的词，基本上算是无用的词，或者说是标点符号，因此这里直接抛弃了
-    if len(seg)>1 and seg!='\r\n':
-        segment.append(seg)
+from clize import Parameter, run
 
 
-'''想要生成一个较为理想的词云，分词的内容质量很重要，那么必须要做的一步就是要去除文本中的“噪音”，通常的实现方法是：先定义一个停用词集，然后利用停用词集对上面的文本分词全集进行过滤，最后形成一个有效词集。
-这里要给大家一句非常重要的温馨提醒，我们希望每一位同学在处理相关数据时都能秉持公正客观真实的原则，但如果你最终导出的结果与你预期的“甜蜜”记录并不符合，比如出现了“多喝热水”等尴尬的词语，那么在去听用词中，适当的抹去这样的小细节来避免明年一个人过节，也是可以理解的。'''
-words_df=pandas.DataFrame({'segment':segment})# 为了方便统计词频，我们把结果保存在pandas的DataFrame中。
-words_df.head()
-# 移除停用词
-stopwords=pandas.read_csv("stopwords.txt",index_col=False,quoting=3,sep="\t",names=['stopword'],encoding="utf8")
-words_df=words_df[~words_df.segment.isin(stopwords.stopword)]
+# jieba.load_userdict("./data/userdict.txt") # 加载自定义词库
 
 
-'''词频统计。我们需要统计有效词集中每个词的出现次数，然后按照次数从多到少进行排序。其中统计使用groupby函数，排序使用sort函数'''
-words_stat=words_df.groupby(by=['segment'])['segment'].agg({"计数":numpy.size})
-words_stat=words_stat.reset_index().sort(columns="计数",ascending=False)
-# print words_stat  #打印统计结果
-words_stat.to_csv('result.txt',sep='\t', encoding='utf-8')
+def cut_file_text(text_file):
+    # 读取文件内容并将其分词
+    with open(text_file, encoding='utf8') as f:
+        content = f.read()
+    segs = jieba.cut(content) # 分词
+    return [seg for seg in segs if len(seg) > 1 and seg != '\r\n'] # 拚弃标点符号和单字
+# 读取内容
+# segment = cut_file_text("./data/love_letter.txt")
+# print(segment)
+
+def word_statistics(seg, stop_words="./data/stopwords.txt"):
+    # 1. 去除文本中不适合的词汇, 为了方便统计词频，我们把结果保存在pandas的 DataFrame 格式方便统计
+    words_df = pandas.DataFrame({'segment':seg}) 
+    # words_df.head()  # 查看大致内容
+    stopwords = pandas.read_csv(stop_words, index_col=False, quoting=3, sep="\t", names=['stopword'], encoding="utf8")
+    words_df = words_df[~words_df.segment.isin(stopwords.stopword)]
+    # 2. 词频统计
+    words_stat = words_df.groupby(by=['segment'])['segment'].agg({"count":numpy.size})
+    words_stat = words_stat.reset_index().sort_values("count", ascending=False)
+    # words_stat.to_csv('result.txt',sep='\t', encoding='utf-8')
+    return words_stat
+# word_stat = word_statistics(segment)
+# print(word_stat.head(20000))
+
+def _show_and_save_img(img, file_name = None):
+    if file_name is not None:
+        img.to_file(file_name)
+    plt.axis("off")
+    plt.imshow(img)
+    plt.show()
+
+# ref: https://github.com/amueller/word_cloud
+def gen_word_cloud_rectangle(words_stat, font_path="./demo.ttf", background_color="white"):
+    # 使用matplotlib和wordcloud工具来图形化显示上述的词频统计结果
+    wordcloud = WordCloud(font_path=font_path, background_color=background_color)
+    word_frequence = {x[0]: x[1] for x in words_stat.head(20000).values}
+    # 最多显示20000个
+    wordcloud = wordcloud.fit_words(word_frequence)
+    return wordcloud
+# img = gen_word_cloud_rectangle(word_stat)
+# _show_and_save_img(img)
 
 
-'''睛之笔：数据图形化显示。有了强有力的工具包，这些工作都是分分钟就可以搞定。我们使用matplotlib和wordcloud工具来图形化显示上述的词频统计结果。'''
-# wordcloud=WordCloud(font_path="simhei.ttf",background_color="black")
-# wordcloud=wordcloud.fit_words(words_stat.head(20000).itertuples(index=False))
-# plt.imshow(wordcloud)
-# plt.show()
+def gen_word_cloud_picture(words_stat, font_path="./demo.ttf", mask_file="./data/heart.jpg", 
+        word_color_img="./data/pink.jpg", background_color="white"):
+    # 自定义图像背景并将词云图形化输出
+    mask_img = imread(mask_file)
+    wordcloud = WordCloud(background_color=background_color, mask=mask_img, font_path=font_path)
+    word_frequence = {x[0]: x[1] for x in words_stat.head(20000).values}
+    wordcloud = wordcloud.fit_words(word_frequence)
+    color_img = imread(word_color_img)
+    mask_color = ImageColorGenerator(color_img)
+    return wordcloud.recolor(color_func=mask_color)
+# img = gen_word_cloud_picture(word_stat)
+# _show_and_save_img(img, "./out/word_cloud.png")
 
-'''当然还可以把图形呈现玩得再酷炫一些，自定义一个心形图像背景并将词云图形化输出。将生成的图形以本地图片的形式生成并打开显示。'''
-bimg=imread('heart.jpg')
-wordcloud=WordCloud(background_color="white",mask=bimg,font_path=u'汉仪秀英体简.ttf')
-wordcloud=wordcloud.fit_words(words_stat.head(20000).itertuples(index=False))
-# wordcloud=wordcloud.fit_words(words_stat.head(20000).itertuples(index=True))
-plt.axis("off")
-cimg = imread('color.jpg')
-bimgColors=ImageColorGenerator(cimg)
-plt.imshow(wordcloud.recolor(color_func=bimgColors))#颜色映射
-# plt.imshow(wordcloud)#随机颜色
-plt.show()
+def add_background(img, background="./data/background.jpg"):
+    # 为词云添加背景图像
+    new_img = img.to_image() # convert to Image
+    background = Image.open(background)
+    final_img = Image.blend(background, new_img, 1) 
+    # 这样叠加是覆盖式的，需要专为numpy后再行判断叠加较好
+    final_img.show()
+    final_img.save("./out/word_cloud.png")
+
+# add_background(img)
+
+# ref: http://clize.readthedocs.io/en/stable/basics.html#collecting-all-positional-arguments
+def main(*par, text_file:'t'="./data/love_letter.txt", stop_file:'s'="./data/stopwords.txt", color_img:'c'="./data/pink.jpg",
+        mask_file:'m'="./data/heart.jpg", out_file:'o'="./out/word_cloud.png", font_path: 'p'='./demo.ttf',):
+    '''生成文字云
+    
+    :param text_file: text file that contain all you word
+    :param stop_file: the stop word which can't be considered
+    :param color_img: the color map img
+    :param mask_file: the mask img for the word
+    :param out_file: output file path which should with sufix of png/jpg...
+    :param font_path: font path
+    '''
+    segment = cut_file_text("./data/love_letter.txt")
+    word_stat = word_statistics(segment)
+    if mask_file is None:
+        img = gen_word_cloud_rectangle(word_stat)
+        _show_and_save_img(img, out_file)
+    else:
+        img = gen_word_cloud_picture(word_stat, font_path, mask_file, color_img)
+        _show_and_save_img(img, out_file)
+
+
+
+if __name__ == '__main__':
+    run(main)
 
 
 

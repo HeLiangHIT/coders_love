@@ -5,8 +5,9 @@
 ## 照片墙
 依赖：
 `pip install Image clize`
+
 使用：
-python picture_wall.py --help
+`python picture_wall.py --help`
 ```
 Usage: ./picture_wall.py [OPTIONS] [text...]
 
@@ -44,10 +45,37 @@ for example:
 
 ## 爱心情书
 依赖：
-`pip install jieba numpy codecs pandas matplotlib wordcloud scipy wordcloud`
-使用：
-python heart_cloud_word.py --help
+`pip install jieba numpy pandas matplotlib wordcloud scipy wordcloud`
 
+使用：
+`python heart_cloud_word.py --help`
+```
+Usage: ./heart_cloud_word.py [OPTIONS] [par...]
+
+生成文字云
+
+Arguments:
+  par...
+
+Options:
+  -t, --text-file=STR   text file that contain all you word (default: ./data/love_letter.txt)
+  -s, --stop-file=STR   the stop word which can't be considered (default: ./data/stopwords.txt)
+  -c, --color-img=STR   the color map img (default: ./data/pink.jpg)
+  -m, --mask-file=STR   the mask img for the word
+  -o, --out-file=STR    output file path which should with sufix of png/jpg... (default: ./out/word_cloud.png)
+  -p, --font-path=STR   font path (default: ./demo.ttf)
+
+Other actions:
+  -h, --help            Show the help
+```
+for example:
+
+`./heart_cloud_word.py`
+![./out/word_cloud.png]
+
+### TODO
++ 增加背景照片和注释文字形成最终类似下图的效果
+![./data/demo.jpg](./data/demo.jpg)
 
 
 
