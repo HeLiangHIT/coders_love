@@ -25,7 +25,7 @@ Other actions:
   -h, --help              Show the help
 ```
 for example:
-![./out/text_img.png](./out/text_img.png)
+![./out/img_ascii.png](./out/img_ascii.png)
 
 ### TODO
 + 字体大小不准确，待修正
