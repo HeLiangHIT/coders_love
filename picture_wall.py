@@ -51,14 +51,24 @@ def picture_wall_rectangle(wall_width, wall_length, edge_len, pic_dir="./img"):
 # print(img_rec.size)
 # img_rec.save('./out/img_rec.png')
 
+def pos_first_not_zero(arr):
+    for x in range(0, len(arr)):
+        if arr[x] > 0:
+            return x
+    return len(arr)
+
 def gen_text_img(text, font_size=20, font_path=None):
     # 从文字生成图像，输入：文字内容，文字字体大小，字体路径
-    text_img = Image.new('RGBA', ((len(text) - 1)* font_size, font_size))
     font = ImageFont.truetype(font_path, font_size) if font_path is not None else None
+    (width, length) = font.getsize(text) # 获取文字大小
+    text_img = Image.new('RGBA', (width, length))
     draw = ImageDraw.Draw(text_img)
     # 第一个tuple表示未知(left,up)，之后是文字，然后颜色，最后设置字体 
-    draw.text((font_size, 0), text, fill=(0,0,0), font=font) 
+    draw.text((0, 0), text, fill=(0, 0, 0), font=font) 
     return text_img
+# text_img = gen_text_img("I LOVE U", 50, './demo.ttf') 
+# text_img.show()
+# text_img.save('./out/text_img.png')
 
 def picture_wall_mask(text_img, edge_len, pic_dir="./img"):
     # 根据文字图像生成对应的照片墙，输入：文字图像，各个照片边长，照片所在路径
@@ -80,9 +90,6 @@ def picture_wall_mask(text_img, edge_len, pic_dir="./img"):
             except Exception as e:
                 print(f"open file {file_name} failed!")
     return new_img
-# text_img = gen_text_img("I LOVE U", 20, './demo.ttf')
-# text_img.show()
-# text_img.save('./out/text_img.png')
 
 # img_ascii = picture_wall_mask(text_img, 50, "./img/")
 # img_ascii.show()
@@ -91,7 +98,7 @@ def picture_wall_mask(text_img, edge_len, pic_dir="./img"):
 
 # ref: http://clize.readthedocs.io/en/stable/basics.html#collecting-all-positional-arguments
 def main(*text, font_size:'s'=20, edge_len:'e'=50, wall_width:'w'=20, 
-        wall_length:'l'=10, pic_dir:'d'="./img", out_dir:'o'="./out",
+        wall_length:'l'=10, pic_dir:'d'="./img", out_dir:'o'="./out/",
         font_path: 'p'='./demo.ttf'):
     '''生成照片墙
     
@@ -108,17 +115,19 @@ def main(*text, font_size:'s'=20, edge_len:'e'=50, wall_width:'w'=20,
         text_ = ' '.join(text)
         print(f"generate text wall for '{text_}' with picture path:{pic_dir}")
         text_img = gen_text_img(text_, font_size, font_path)
+        # text_img.show()
         img_ascii = picture_wall_mask(text_img, edge_len, pic_dir)
         img_ascii.show()
-        img_ascii.save('./out/img_ascii.png')
+        img_ascii.save(out_dir + os.path.sep + '_'.join(text) + '.png')
     else:
         print(f"generate rectangle wall with picture path:{pic_dir}")
         img_rec = picture_wall_rectangle(wall_width, wall_length, edge_len, pic_dir)
         img_rec.show()
-        img_rec.save('./out/img_rec.png')
+        img_rec.save(out_dir + os.path.sep + '_'.join(text) + '.png')
 
 if __name__ == '__main__':
     run(main)
+    pass
 
 
 

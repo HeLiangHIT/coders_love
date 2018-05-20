@@ -25,10 +25,12 @@ Other actions:
   -h, --help              Show the help
 ```
 for example:
-![./out/img_ascii.png](./out/img_ascii.png)
+`./picture_wall.py I Love U -s 30 -e 10`
+![./out/I_LOVE_U.png](./out/I_LOVE_U.png)
+`./picture_wall.py 我爱你 -s 30 -e 10`
+![./out/我爱你.png](./out/我爱你.png)
 
 ### TODO
-+ 字体大小不准确，待修正;
 + 子照片的处理方式有待提升，目前采用的只是根据字体像素透明度控制透明度，还可以抽象出来让用户选择控制方式～比如：
     * 根据字体像素透明度控制子图尺寸
     * 根据字体像素透明度控制子图形状
