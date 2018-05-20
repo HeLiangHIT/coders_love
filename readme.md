@@ -3,6 +3,9 @@
 # 程序员的520怎么表白
 
 ## 照片墙
+依赖：
+`pip install Image clize`
+使用：
 python picture_wall.py --help
 ```
 Usage: ./picture_wall.py [OPTIONS] [text...]
@@ -40,10 +43,10 @@ for example:
     * 或者直接采用圆形裁剪子图
 
 ## 爱心情书
-
-
-
-
+依赖：
+`pip install jieba numpy codecs pandas matplotlib wordcloud scipy wordcloud`
+使用：
+python heart_cloud_word.py --help
 
 
 
