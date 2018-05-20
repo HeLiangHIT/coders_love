@@ -71,7 +71,7 @@ Other actions:
 for example:
 
 `./heart_cloud_word.py`
-![./out/word_cloud.png]
+![./out/word_cloud.png](./out/word_cloud.png)
 
 ### TODO
 + 增加背景照片和注释文字形成最终类似下图的效果
