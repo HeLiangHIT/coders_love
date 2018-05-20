@@ -123,7 +123,7 @@ def main(*text, font_size:'s'=20, edge_len:'e'=50, wall_width:'w'=20,
         print(f"generate rectangle wall with picture path:{pic_dir}")
         img_rec = picture_wall_rectangle(wall_width, wall_length, edge_len, pic_dir)
         img_rec.show()
-        img_rec.save(out_dir + os.path.sep + '_'.join(text) + '.png')
+        img_rec.save(out_dir + os.path.sep + 'img_rec.png')
 
 if __name__ == '__main__':
     run(main)

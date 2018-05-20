@@ -25,8 +25,10 @@ Other actions:
   -h, --help              Show the help
 ```
 for example:
+
 `./picture_wall.py I Love U -s 30 -e 10`
 ![./out/I_LOVE_U.png](./out/I_LOVE_U.png)
+
 `./picture_wall.py 我爱你 -s 30 -e 10`
 ![./out/我爱你.png](./out/我爱你.png)
 
