@@ -79,8 +79,12 @@ for example:
 ![./data/demo.jpg](./data/demo.jpg)
 
 
+# 表白网站
+参考  http://www.jq22.com/yanshi1073 
+制作一个类似的网站，充分发挥想象~
+
 如果本源码对你有所帮助，可以点赞以支持作者的持续更新哦～
-![./URgood.jpg](./URgood.jpg)
+![./URgood.jpg](./URgood.jpg=200x300)
 
 
 
