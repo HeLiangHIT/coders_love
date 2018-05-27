@@ -84,7 +84,8 @@ for example:
 制作一个类似的网站，充分发挥想象~
 
 如果本源码对你有所帮助，可以点赞以支持作者的持续更新哦～
-![./URgood.jpg](./URgood.jpg=200x300)
+
+<img src="./URgood.jpg" width = "200" height = "250" alt="支持作者" align=center />
 
 
 
