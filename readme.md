@@ -10,7 +10,7 @@
 使用：
 `python picture_wall.py --help`
 ```
-Usage: ./picture_wall.py [OPTIONS] [text...]
+Usage: picture_wall.py [OPTIONS] [text...]
 
 生成照片墙
 
@@ -23,8 +23,9 @@ Options:
   -w, --wall-width=INT    picture number of rectangle width (default: 20)
   -l, --wall-length=INT   picture number of rectangle length (default: 10)
   -d, --pic-dir=STR       picture's path (default: ./img)
-  -o, --out-dir=STR       output dir (default: ./out)
+  -o, --out-dir=STR       output dir (default: ./out/)
   -p, --font-path=STR     font path (default: ./demo.ttf)
+  -m, --method=STR        decrator method, now accept 'alpha', 'size' (default: alpha)
 
 Other actions:
   -h, --help              Show the help
@@ -40,9 +41,13 @@ for example:
 如果指定为相册文件夹的话，将得到如下效果（文件夹下图片太多而且太大的话会比较慢）：
 ![./out/520.png](./out/520.png)
 
+也可以选择尺寸的方式调整子图，例如: `python picture_wall.py 1314 -m size`
+![./out/1314.png](./out/1314.png)
+
+
+
 ### TODO
 + 子照片的处理方式有待提升，目前采用的只是根据字体像素透明度控制透明度，还可以抽象出来让用户选择控制方式～比如：
-    * 根据字体像素透明度控制子图尺寸
     * 根据字体像素透明度控制子图形状
     * 根据字体像素透明度控制子图颜色亮度
     * 或者直接采用圆形裁剪子图
@@ -86,9 +91,9 @@ for example:
 参考  http://www.jq22.com/yanshi1073 
 制作一个类似的网站，充分发挥想象~
 
-如果本源码对你有所帮助，可以点赞以支持作者的持续更新哦～
+欢迎关注作者，获取更新信息哦～
 
-<img src="./URgood.jpg" width = "300" height = "300" alt="支持作者" align=center />
+<img src="./owner.jpg" width = "300" height = "300" alt="关注作者" align=center />
 
 
 

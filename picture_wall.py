@@ -10,6 +10,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import os, sys
 from clize import Parameter, run
+from effect_func import effects_func
 
 
 def list_file(filedir, sufix=None):
@@ -51,12 +52,6 @@ def picture_wall_rectangle(wall_width, wall_length, edge_len, pic_dir="./img"):
 # print(img_rec.size)
 # img_rec.save('./out/img_rec.png')
 
-def pos_first_not_zero(arr):
-    for x in range(0, len(arr)):
-        if arr[x] > 0:
-            return x
-    return len(arr)
-
 def gen_text_img(text, font_size=20, font_path=None):
     # 从文字生成图像，输入：文字内容，文字字体大小，字体路径
     font = ImageFont.truetype(font_path, font_size) if font_path is not None else None
@@ -70,7 +65,8 @@ def gen_text_img(text, font_size=20, font_path=None):
 # text_img.show()
 # text_img.save('./out/text_img.png')
 
-def picture_wall_mask(text_img, edge_len, pic_dir="./img"):
+
+def picture_wall_mask(text_img, edge_len, pic_dir="./img", method='alpha'):
     # 根据文字图像生成对应的照片墙，输入：文字图像，各个照片边长，照片所在路径
     new_img = Image.new('RGBA', (text_img.size[0] * edge_len, text_img.size[1] * edge_len))
     file_list = list_file(pic_dir, ['.jpeg', '.jpg', '.gif', '.png', '.bmp'])
@@ -82,13 +78,13 @@ def picture_wall_mask(text_img, edge_len, pic_dir="./img"):
             try:
                 img = Image.open(file_name).convert('RGBA')
                 img = img.resize((edge_len, edge_len), Image.ANTIALIAS)
-                _, _, _, alpha = img.split()
-                alpha = alpha.point(lambda i: pixel[-1])
-                img.putalpha(alpha)
+                # img = trans_alpha(img, pixel)
+                # img = trans_size(img, pixel)
+                img = effects_func[method](img, pixel)
                 new_img.paste(img, (x * edge_len, y * edge_len))
                 img_index += 1
             except Exception as e:
-                print(f"open file {file_name} failed!")
+                print(f"open file {file_name} failed! {e}")
     return new_img
 
 # img_ascii = picture_wall_mask(text_img, 50, "./img/")
@@ -99,7 +95,7 @@ def picture_wall_mask(text_img, edge_len, pic_dir="./img"):
 # ref: http://clize.readthedocs.io/en/stable/basics.html#collecting-all-positional-arguments
 def main(*text, font_size:'s'=20, edge_len:'e'=50, wall_width:'w'=20, 
         wall_length:'l'=10, pic_dir:'d'="./img", out_dir:'o'="./out/",
-        font_path: 'p'='./demo.ttf'):
+        font_path: 'p'='./demo.ttf', method: 'm'='alpha'):
     '''生成照片墙
     
     :param text: Text of picture wall, if not defined this will generage a rectangle picture wall
@@ -110,13 +106,16 @@ def main(*text, font_size:'s'=20, edge_len:'e'=50, wall_width:'w'=20,
     :param pic_dir: picture's path
     :param out_dir: output dir
     :param font_path: font path
+    :param method: decrator method, now accept 'alpha', 'size'
     '''
     if len(text) >= 1:
         text_ = ' '.join(text)
         print(f"generate text wall for '{text_}' with picture path:{pic_dir}")
+        if method not in effects_func.keys():
+            raise Exception(f'param method[-m {method}] not defined! accept method is: size, alpha')
         text_img = gen_text_img(text_, font_size, font_path)
         # text_img.show()
-        img_ascii = picture_wall_mask(text_img, edge_len, pic_dir)
+        img_ascii = picture_wall_mask(text_img, edge_len, pic_dir, method)
         img_ascii.show()
         img_ascii.save(out_dir + os.path.sep + '_'.join(text) + '.png')
     else:
