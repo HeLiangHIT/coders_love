@@ -3,6 +3,76 @@
 # 程序员的520怎么表白
 原文地址： https://github.com/HeLiangHIT/coders_love
 
+## 一行python的表白
+首先祭出绝招，用1行python表白：
+```
+print('\n'.join([''.join([('I LOVE U'[(x-y) % 8] if ( (x*0.05)**2 + (y*0.1)**2 -1)**3 - (x*0.05)**2 * (y*0.1)**3 <=0 else ' ') for x in range(-30,30)]) for y in range(15, -15, -1)]))
+```
+效果如下：
+```
+                 UI LOVE            LOVE UI L
+            OVE UI LOVE UI LO   UI LOVE UI LOVE U
+          LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI L
+         LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI LOV
+        LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI LOVE
+        OVE UI LOVE UI LOVE UI LOVE UI LOVE UI LOVE U
+        VE UI LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI
+        E UI LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI
+         UI LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI L
+        UI LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI LO
+          LOVE UI LOVE UI LOVE UI LOVE UI LOVE UI LO
+          OVE UI LOVE UI LOVE UI LOVE UI LOVE UI LO
+          VE UI LOVE UI LOVE UI LOVE UI LOVE UI LOV
+            UI LOVE UI LOVE UI LOVE UI LOVE UI LO
+              LOVE UI LOVE UI LOVE UI LOVE UI LO
+              OVE UI LOVE UI LOVE UI LOVE UI LO
+                 UI LOVE UI LOVE UI LOVE UI L
+                   LOVE UI LOVE UI LOVE UI
+                    VE UI LOVE UI LOVE UI
+                       I LOVE UI LOVE
+                          VE UI LOV
+                             I L
+                              L
+```
+原理大概是：
+```
+words, line = "I LOVE U", []
+for y in range(15, -15, -1):
+    line_c = []
+    letters = ''
+    for x in range(-30, 30):
+        expression = ((x*0.05)**2+(y*0.1)**2-1)**3-(x*0.05)**2*(y*0.1)**3
+        if expression <= 0:
+            letters += words[(x-y) % len(words)]
+        else:
+            letters += ' '
+    line_c.append(letters)
+    line += line_c
+print('\n'.join(line))
+```
+
+进一步可以制作成动画：
+```
+def heart_text_animation(words="I LOVE U"):
+  import time
+  for c in words.split():
+    line = []
+    for y in range(15, -15, -1):
+        line_c = []
+        letters = ''
+        for x in range(-30, 30):
+            expression = ((x*0.05)**2+(y*0.1)**2-1)**3-(x*0.05)**2*(y*0.1)**3
+            if expression <= 0:
+                letters += c[(x-y) % len(c)]
+            else:
+                letters += ' '
+        line_c.append(letters)
+        line += line_c
+    print('\n'.join(line))
+    time.sleep(1)
+```
+
+
 ## 照片墙
 依赖：
 `pip install Image clize`
