@@ -158,8 +158,8 @@ for example:
 
 
 # 表白网站
-参考  http://www.jq22.com/yanshi1073 
-制作一个类似的网站，充分发挥想象~
+1. 参考: http://www.jq22.com/yanshi1073  制作一个类似的网站，充分发挥想象~
+2. 参考: https://github.com/Germey/ValentinesDay  绝对是真情流露，感人肺腑
 
 欢迎关注作者，获取更新信息哦～
 
