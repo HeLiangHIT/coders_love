@@ -1,12 +1,13 @@
 [TOC]
 
 # 程序员的520怎么表白
-原文地址： https://github.com/HeLiangHIT/coders_love
+原文地址： https: // github.com / HeLiangHIT / coders_love
 
-## 一行python的表白
+# 一行python的表白
 首先祭出绝招，用1行python表白：
-```
-print('\n'.join([''.join([('I LOVE U'[(x-y) % 8] if ( (x*0.05)**2 + (y*0.1)**2 -1)**3 - (x*0.05)**2 * (y*0.1)**3 <=0 else ' ') for x in range(-30,30)]) for y in range(15, -15, -1)]))
+```py
+print('\n'.join([''.join([('I LOVE U'[(x - y) % 8] if ((x * 0.05)**2 + (y * 0.1)**2 - 1)**3 -
+      (x * 0.05)**2 * (y * 0.1)**3 <= 0 else ' ') for x in range(-30, 30)]) for y in range(15, -15, -1)]))
 ```
 效果如下：
 ```
@@ -35,7 +36,7 @@ print('\n'.join([''.join([('I LOVE U'[(x-y) % 8] if ( (x*0.05)**2 + (y*0.1)**2 -
                               L
 ```
 原理大概是：
-```
+```py
 words, line = "I LOVE U", []
 for y in range(15, -15, -1):
     line_c = []
@@ -52,7 +53,7 @@ print('\n'.join(line))
 ```
 
 进一步可以制作成动画：
-```
+```py
 def heart_text_animation(words="I LOVE U"):
   import time
   for c in words.split():
@@ -72,8 +73,28 @@ def heart_text_animation(words="I LOVE U"):
     time.sleep(1)
 ```
 
+# 粗糙的心形表白图像
+```py
+import matplotlib.pyplot as plt
+import numpy as np
 
-## 照片墙
+t = np.arange(0,2*np.pi, 0.1)
+x = 16*np.sin(t)**3
+y = 13*np.cos(t)-5*np.cos(2*t)-2*np.cos(3*t)-np.cos(4*t)
+
+plt.figure(figsize=(8,6), dpi=80, facecolor='white')
+plt.plot(x,y,color='red')
+plt.axis('off')
+plt.fill(x,y,'hotpink')
+plt.text(0, -0.4, 'ME & YOU', fontsize=36, fontweight='bold',
+           color='black', horizontalalignment='center')
+plt.show()
+```
+![./out/heart.png](./out/heart.png)
+> 如果需要的话还可以进一步装饰
+
+
+# 照片墙
 依赖：
 `pip install Image clize`
 
@@ -116,13 +137,13 @@ for example:
 
 
 
-### TODO
+# TODO
 + 子照片的处理方式有待提升，目前采用的只是根据字体像素透明度控制透明度，还可以抽象出来让用户选择控制方式～比如：
     * 根据字体像素透明度控制子图形状
     * 根据字体像素透明度控制子图颜色亮度
     * 或者直接采用圆形裁剪子图
 
-## 爱心情书
+# 爱心情书
 依赖：
 `pip install jieba numpy pandas matplotlib wordcloud scipy wordcloud`
 
@@ -152,7 +173,7 @@ for example:
 `./heart_cloud_word.py`
 ![./out/word_cloud.png](./out/word_cloud.png)
 
-### TODO
+# TODO
 + 增加背景照片和注释文字形成最终类似下图的效果
 ![./data/demo.jpg](./data/demo.jpg)
 
