@@ -137,7 +137,7 @@ for example:
 
 
 
-# TODO
+## TODO
 + 子照片的处理方式有待提升，目前采用的只是根据字体像素透明度控制透明度，还可以抽象出来让用户选择控制方式～比如：
     * 根据字体像素透明度控制子图形状
     * 根据字体像素透明度控制子图颜色亮度
@@ -173,7 +173,7 @@ for example:
 `./heart_cloud_word.py`
 ![./out/word_cloud.png](./out/word_cloud.png)
 
-# TODO
+## TODO
 + 增加背景照片和注释文字形成最终类似下图的效果
 ![./data/demo.jpg](./data/demo.jpg)
 
@@ -187,6 +187,8 @@ for example:
 `python text_background_image.py ./data/mona-lisa.jpg ./out/text_background_image.jpg`
 ![./out/text_background_image.jpg](./out/text_background_image.jpg)
 
+## TODO
++ 增加输出照片亮度
 
 # 表白网站
 1. 参考: http://www.jq22.com/yanshi1073  制作一个类似的网站，充分发挥想象~

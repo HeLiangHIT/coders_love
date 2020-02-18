@@ -11,7 +11,7 @@ from sys import argv
 font_size = 10
 # 字体间距，1 即间距正好为字体大小，紧凑排布，1.2 为字体大小的 1.2 倍
 font_space = 1.2
-# 绘制的文本
+# 绘制的文本，加个空格或标点符号可以不用这么密集，但是亮度会更低
 text = '我爱你'
 # 字体文件的路径
 font_file = './demo.ttf'
