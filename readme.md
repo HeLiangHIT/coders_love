@@ -177,6 +177,16 @@ for example:
 + 增加背景照片和注释文字形成最终类似下图的效果
 ![./data/demo.jpg](./data/demo.jpg)
 
+# 表白密码图片
+依赖: `pip install Pillow`
+
+使用: `python text_background_image.py input_file output_file`
+
+for example:
+
+`python text_background_image.py ./data/mona-lisa.jpg ./out/text_background_image.jpg`
+![./out/text_background_image.jpg](./out/text_background_image.jpg)
+
 
 # 表白网站
 1. 参考: http://www.jq22.com/yanshi1073  制作一个类似的网站，充分发挥想象~
